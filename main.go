@@ -21,16 +21,10 @@ import (
 	"time"
 )
 
-type Status struct {
-	NotDone    bool
-	InProgress bool
-	Done       bool
-}
-
 type Task struct {
 	ID          int       `json:"id"`
 	Description string    `json:"description"`
-	Status      Status    `json:"status"`
+	Status      string    `json:"status"`
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updatedAt"`
 }
@@ -51,13 +45,9 @@ func AddTask(task []Task, description string) []Task {
 	tasks := Task{
 		ID:          newId,
 		Description: description,
-		Status: Status{
-			NotDone:    true,
-			InProgress: false,
-			Done:       true,
-		},
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		Status:      "NotDone",
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
 	}
 
 	return append(task, tasks)
@@ -77,8 +67,8 @@ func loadJSON() []Task {
 	return tasks
 }
 
-func saveJSON() []Task {
-	var tasks []Task
+func saveJSON(tasks []Task) {
+
 	data, err := json.Marshal(tasks)
 	if err != nil {
 		_ = fmt.Errorf("error to read the file")
@@ -88,15 +78,14 @@ func saveJSON() []Task {
 	if err != nil {
 		_ = fmt.Errorf("error to read the file")
 	}
-
-	return tasks
 }
 
 func main() {
-	loadJSON()
-	saveJSON()
+	tsk := loadJSON()
+	saveJSON(tsk)
+
 	log.Print("Use task-cli + command to use this app...")
-	if len(os.Args) < 3 {
+	if len(os.Args) < 2 {
 		fmt.Println("\nInvalid arguments!!!" +
 			"\nUse command like task-cli add or task-cli show.")
 		return
@@ -104,6 +93,7 @@ func main() {
 
 	switch os.Args[1] {
 	case "add":
-		//AddTask(,os.Args[3])
+		tsk = AddTask(tsk, os.Args[2])
+		saveJSON(tsk)
 	}
 }
