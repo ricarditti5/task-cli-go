@@ -3,3 +3,4 @@
 .vs/
 .vscode/
 *.exe
+!task-cli.exe

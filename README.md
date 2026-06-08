@@ -7,12 +7,20 @@ A minimal command-line task manager written in Go. Tasks are stored persistently
 | Command | Description |
 |---|---|
 | `task-cli add "<description>"` | Add a new task |
+| `task-cli delte id` | Delete an task |
+| `task-cli change-status id "<New status>"` | Change the status of task |
 
 ## Usage
 
 ```bash
 # Add a task
 task-cli add "buy groceries"
+# Change status of task
+task-cli change-status 1 "done"
+# Delete a task
+task-cli delete 1
+# Show some commands of the cli app
+task-cli help
 ```
 
 ## Install

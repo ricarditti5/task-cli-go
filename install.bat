@@ -37,7 +37,7 @@ if exist "go.mod" (
     echo ========================================
     echo  Installation complete!
     echo.
-    echo  Use .\task-cli add "my task" in this folder.
+    echo  Use task-cli add "my task" in this folder.
     echo  Data will be saved to task.json in this folder.
     echo ========================================
     pause
