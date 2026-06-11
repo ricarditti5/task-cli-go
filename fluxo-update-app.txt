@@ -4,5 +4,5 @@ git commit -m "add new feature"
 git push                    # push normal, nada acontece
 
 # quando quiseres lançar versão nova
-git tag v1.1.0
-git push origin v1.1.0      # isto dispara o Action
+git tag ex:v1.1.0
+git push origin ex: v1.1.0      # isto dispara o Action
