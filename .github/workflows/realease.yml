@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Build Windows
+        run: GOOS=windows GOARCH=amd64 go build -o task-cli.exe
+
+      - name: Build Linux
+        run: GOOS=linux GOARCH=amd64 go build -o task-cli-linux
+
+      - name: Build macOS
+        run: GOOS=darwin GOARCH=amd64 go build -o task-cli-macos
+
+      - name: Create Windows zip
+        run: |
+          cat > task-cli.bat << 'BAT'
+          @echo off
+          set DIR=%~dp0
+          "%DIR%task-cli.exe" %*
+          BAT
+          zip task-cli-windows.zip task-cli.exe task-cli.bat
+
+      - name: Create Linux tar
+        run: tar -czf task-cli-linux.tar.gz task-cli-linux
+
+      - name: Create macOS tar
+        run: tar -czf task-cli-macos.tar.gz task-cli-macos
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            task-cli-windows.zip
+            task-cli-linux.tar.gz
+            task-cli-macos.tar.gz

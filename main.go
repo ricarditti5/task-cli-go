@@ -70,7 +70,6 @@ func DeleteTask(task []Task, idToDel int) ([]Task, bool) {
 }
 
 func ShowTask(task []Task) {
-
 	if len(task) == 0 {
 		fmt.Println("No tasks found.")
 		return
@@ -80,6 +79,44 @@ func ShowTask(task []Task) {
 	}
 }
 
+func ShowTaskByProgress(tasks []Task, filter string) {
+	validStatuses := map[string]bool{
+		"not done":    true,
+		"in-progress": true,
+		"done":        true,
+	}
+
+	if !validStatuses[filter] {
+		fmt.Println("Invalid status. Use: not done, in-progress, or done.")
+		return
+	}
+
+	found := false
+	for _, t := range tasks {
+		if t.Status == filter {
+			fmt.Printf("[%d] %s | %s\n", t.ID, t.Description, t.Status)
+			found = true
+		}
+	}
+
+	if !found {
+		fmt.Printf("No tasks found with status: %s\n", filter)
+	}
+}
+
+func UpdateTask(task []Task, id int, newTask string) {
+	if len(task) == 0 {
+		fmt.Println("No tasks found.")
+		return
+	}
+	for i := range task {
+		if task[i].ID == id {
+			task[i].Description = newTask
+			return
+		}
+	}
+	fmt.Println("Taks not found.")
+}
 func ChangeStatus(task []Task, id int, newStatus string) {
 	if len(task) == 0 {
 		fmt.Println("No tasks found.")
@@ -163,7 +200,7 @@ func main() {
 	//delete task
 	case "delete":
 		if len(os.Args) < 2 {
-			fmt.Println("Usage: task-cli add \"task description\"")
+			fmt.Println("Usage: task-cli delete \"task id\"")
 			return
 		}
 		id, err := strconv.Atoi(os.Args[2])
@@ -180,9 +217,9 @@ func main() {
 		saveJSON(tsk)
 	//change the status
 	case "change-status":
-		//utilizar  argStatus = os.Args[3] task-cli change-status 1 "Done"
+		//use  argStatus = os.Args[3] task-cli change-status 1 "Done"
 		if len(os.Args) < 3 {
-			fmt.Println("Usage: task-cli add \"task description\"")
+			fmt.Println("Usage: task-cli help")
 			return
 		}
 		id, err := strconv.Atoi(os.Args[2])
@@ -192,14 +229,33 @@ func main() {
 		}
 		ChangeStatus(tsk, id, os.Args[3])
 		saveJSON(tsk)
+	//list all the task adn by progress
+	case "list":
+		if len(os.Args) == 3 {
+			ShowTaskByProgress(tsk, os.Args[2])
+		} else {
+			ShowTask(tsk)
+		}
 	case "help":
 		fmt.Printf("For add new tasks use: task-cli add \"Task name\" \n" +
 			"For delete tasks use: task-cli delete \"Task id\" \n" +
-			"For change the status of tasks use: task-cli change-status \"Task id\" \"The new status\" \n")
+			"For change the status of tasks use: task-cli change-status \"Task id\" \"The new status\" \n" +
+			"For list tasks use: task-cli list \n" +
+			"For list tasks by progress use: task-cli list \"not done/in-progress/done/ \" \n" +
+			"For update the tasks use: task-cli update \"Task id\" \"The new task\" \n")
 	case "update":
-
-	case "list":
-
+		//use task-cli update 1 "Update the task"
+		if len(os.Args) < 3 {
+			fmt.Println("Usage: task-cli help")
+			return
+		}
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Println("Invalid ID")
+			return
+		}
+		UpdateTask(tsk, id, os.Args[3])
+		saveJSON(tsk)
 	default:
 		fmt.Printf("Unknown command: %s\n", os.Args[1])
 	}
