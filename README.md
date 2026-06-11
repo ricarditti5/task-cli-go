@@ -14,7 +14,7 @@ A minimal command-line task manager written in Go. Tasks are stored persistently
 | `task-cli list "<status>"` | List tasks filtered by status |
 | `task-cli help` | Show available commands |
 
-**Available statuses:** `"not done"` · `in-progress` · `done`
+**Available statuses:** `todo` · `in-progress` · `done`
 
 ## Usage
 
@@ -35,7 +35,7 @@ task-cli delete 1
 task-cli list
 
 # List tasks filtered by status
-task-cli list "not done"
+task-cli list todo
 task-cli list "in-progress"
 task-cli list done
 
@@ -45,27 +45,30 @@ task-cli help
 
 ## Install
 
-Download the latest release here: **[github.com/ricarditti5/task-cli-go/releases/latest](https://github.com/ricarditti5/task-cli-go/releases/latest)**
-
 ### Windows
 
-Download the latest release and extract the `.zip` file. It includes:
+1. Go to the [**latest release page**](https://github.com/ricarditti5/task-cli-go/releases/latest)
+2. Download `task-cli-windows.zip`
+3. Extract the `.zip` to a folder of your choice
+4. Open the extracted folder — you will find `task-cli.bat`
+5. Open a terminal inside that folder and run:
 
-```
-task-cli-windows.zip
-├── task-cli.exe
-└── task-cli.bat
+```bash
+task-cli help
 ```
 
-Run `task-cli.bat` from the terminal or add the folder to your `PATH` to use it from anywhere.
+> 💡 To use `task-cli` from any folder, add the extracted folder to your system `PATH`.
 
 ### Linux / macOS
 
-Download the binary from the latest release and make it executable:
+1. Go to the [**latest release page**](https://github.com/ricarditti5/task-cli-go/releases/latest)
+2. Download `task-cli-linux.tar.gz` or `task-cli-macos.tar.gz`
+3. Extract and make it executable:
 
 ```bash
+tar -xzf task-cli-linux.tar.gz
 chmod +x task-cli-linux
-./task-cli-linux
+./task-cli-linux help
 ```
 
 ### Build from source

@@ -3,4 +3,5 @@
 .vs/
 .vscode/
 *.exe
-!task-cli.exe
+task-cli.exe
+task.json
