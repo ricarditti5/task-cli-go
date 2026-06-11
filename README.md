@@ -1,6 +1,6 @@
 # Task CLI Go
 
-A minimal command-line task manager written in Go. Tasks are stored persistently in a `task.json` file located in the same directory as the executable.
+A minimal command-line task manager written in Go. Tasks are stored persistently in a `task.json` file located in the same directory as the executable. [URL PROJECT](https://github.com/ricarditti5/task-cli-go)
 
 ## Commands
 
